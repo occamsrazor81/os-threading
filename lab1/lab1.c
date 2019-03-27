@@ -103,6 +103,35 @@ void ispis(double start, uint64_t ms[])
 
 }
 
+void ispisFile(double start, uint64_t ms[])
+{
+
+  FILE *fptr;
+  fptr = fopen("readme.txt", "a");
+
+  if (fptr == NULL)
+  {
+        fprintf(fptr, "Cannot open file \n");
+        exit(0);
+  }
+  //fprintf(f, "Some text: %s\n", text);
+  double ukupno = dsecnd();
+  double elapsed = ukupno - start;
+  fprintf(fptr, "%g ",elapsed);
+
+  fprintf(fptr, "i = %d ", m);
+
+  if(m > 0) fprintf (fptr, "ms[i] = %" PRIu64 " ", ms[m-1]);
+  else fprintf (fptr, "ms[i] = %" PRIu64 " ", ms[4]);
+
+  fprintf(fptr, "ms[] = ");
+  for(int i = 0; i < 5; ++i)
+    fprintf (fptr, "%" PRIu64 " ", ms[i]%100);
+
+  fprintf(fptr,"\n");
+  fclose(fptr);
+}
+
 int processRqst(double timeLapse, double start, uint64_t ms[])
 {
   timeLapse = 2.0;
@@ -116,8 +145,10 @@ int processRqst(double timeLapse, double start, uint64_t ms[])
     //newRqst je slucajno generirani float izmedu 0 i 1
     //ako je newRqst*100 > 50 (vjerojatnost 0.5) onda ispis
     if(newRqst*100 > 50.0)
-      ispis(start, ms);
-
+    {
+        ispis(start, ms);
+        ispisFile(start,ms);
+    }
     //end je slucajno generirani float izmedu 0 i 1
     //ako je end*100 > 90 (vjerojatnost 0.1) onda kraj
     //moglo se uzet i end*100 < 10
@@ -214,7 +245,7 @@ int main()
     }
     if(prost(r)) printf("broj %"PRIu64" je prost\n", r);
      ms[m] = r;
-     
+
     if(m+1 == 5) m = 0;
     else m++;
 
