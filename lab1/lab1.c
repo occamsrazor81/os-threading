@@ -70,8 +70,7 @@ int testBitova(uint64_t rnd)
       if(prvajedinica == 1)
       if ( ((k1 & 1 == 1) && (k2 & 1 == 1) && (k3 & 1 == 1)) ||
        ((k1 & 1 == 0) && (k2 & 1 == 0) && (k3 & 1 == 0)))
-      return 1;
-      // return 0; OVO TREBA BIT
+        return 0;
 
   }
 
@@ -232,16 +231,21 @@ int main()
 
   uint64_t rnd = time(NULL);
   uint64_t r;
+  int ponavljaj;
   while(1)
   {
     r = generate(rnd);
     printf ("r = %" PRIu64 "\n", r);
     rnd = r;
-    while(testBitova(r) == 0 || prost(r) == 0)
+
+    ponavljaj = 0;
+    while((testBitova(r) == 0 || prost(r) == 0) && ponavljaj < 10000)
     {
 
         if(r <= maxBroj - 2) r +=2;
         else r = generate(rnd);
+
+        ponavljaj++;
     }
     if(prost(r)) printf("broj %"PRIu64" je prost\n", r);
      ms[m] = r;
