@@ -46,7 +46,8 @@ double dsecnd (void)
 
 int prost(uint64_t rnd)
 {
-  cnt++;
+  if(cnt < 100000) cnt++;
+  else cnt = 37581;
   for(int i = 2; i < cnt; ++i)
   if(rnd % i == 0) return 0;
 
@@ -212,7 +213,8 @@ int main()
         else r = generate(rnd);
     }
     if(prost(r)) printf("broj %"PRIu64" je prost\n", r);
-    ms[m] = r;
+     ms[m] = r;
+     
     if(m+1 == 5) m = 0;
     else m++;
 
@@ -231,7 +233,7 @@ int main()
   //????????????????????????????????????????????????????
   // OVDJE TESTOVI
 
-  
+
   // uint64_t rnd = time(NULL);
   // uint64_t r = generate(rnd);
   // printf ("r = %" PRIu64 "\n", r);
