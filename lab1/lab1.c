@@ -4,7 +4,7 @@
 #include <inttypes.h>
 #include <time.h>
 
-int cnt = 45279;
+int cnt = 45278;
 int m = 0;
 uint64_t maxBroj = 0xffffffffffffffffULL;
 
@@ -12,8 +12,11 @@ uint64_t maxBroj = 0xffffffffffffffffULL;
 
 uint64_t generate(uint64_t rnd)
 {
-  uint64_t A = 8654098236518264769ULL;
-  uint64_t B = 18116652324302926351ULL;
+  //uint64_t A = 8654098236518264769ULL;
+  uint64_t A = 0xfcdbfa9f6c42af67ULL;
+  uint64_t B = 0xaefcbf98c6b4a210ULL;
+
+  //uint64_t B = 18116652324302926351ULL;
 
   uint64_t rnd1;
   rnd1 = (rnd * A) % B | 1;
@@ -47,7 +50,7 @@ double dsecnd (void)
 int prost(uint64_t rnd)
 {
   if(cnt < 100000) cnt++;
-  else cnt = 37581;
+  else cnt = 37642;
   for(int i = 2; i < cnt; ++i)
   if(rnd % i == 0) return 0;
 
@@ -55,7 +58,7 @@ int prost(uint64_t rnd)
 }
 
 
-/////////
+
 int testBitova(uint64_t rnd)
 {
   int prvajedinica = 0;
@@ -88,7 +91,7 @@ void ispis(double start, uint64_t ms[])
   double elapsed = ukupno - start;
   printf("%g ",elapsed);
 
-  printf("i = %d ", m);
+  printf("u = %d ", m);
 
   if(m > 0) printf ("ms[i] = %" PRIu64 " ", ms[m-1]);
   else printf ("ms[i] = %" PRIu64 " ", ms[4]);
@@ -118,7 +121,7 @@ void ispisFile(double start, uint64_t ms[])
   double elapsed = ukupno - start;
   fprintf(fptr, "%g ",elapsed);
 
-  fprintf(fptr, "i = %d ", m);
+  fprintf(fptr, "u = %d ", m);
 
   if(m > 0) fprintf (fptr, "ms[i] = %" PRIu64 " ", ms[m-1]);
   else fprintf (fptr, "ms[i] = %" PRIu64 " ", ms[4]);
@@ -133,7 +136,7 @@ void ispisFile(double start, uint64_t ms[])
 
 int processRqst(double timeLapse, double start, uint64_t ms[])
 {
-  timeLapse = 2.0;
+
   if(timeLapse < 1.0) return 0; // 0 = nije kraj
   else
   {
@@ -190,7 +193,7 @@ int processRqst(double timeLapse, double start, uint64_t ms[])
 // void binarno2(uint64_t n)
 // {
 //
-//     for (int i = 63; i >= 0; i--)
+//     for (int  i = 63; i >= 0; i--)
 //     {
 //         int k = n >> i;
 //         if (k & 1 == 1)
@@ -232,14 +235,14 @@ int main()
   uint64_t rnd = time(NULL);
   uint64_t r;
   int ponavljaj;
-  while(1)
+ while(1)
   {
     r = generate(rnd);
     printf ("r = %" PRIu64 "\n", r);
     rnd = r;
 
     ponavljaj = 0;
-    while((testBitova(r) == 0 || prost(r) == 0) && ponavljaj < 10000)
+    while((testBitova(r) == 0 || prost(r) == 0) && ponavljaj < 100000000)
     {
 
         if(r <= maxBroj - 2) r +=2;
@@ -248,8 +251,7 @@ int main()
         ponavljaj++;
     }
     if(prost(r)) printf("broj %"PRIu64" je prost\n", r);
-     ms[m] = r;
-
+    ms[m] = r;
     if(m+1 == 5) m = 0;
     else m++;
 
@@ -260,7 +262,10 @@ int main()
 
     if(kraj) break;
 
-  }
+   }
+
+
+//binarno2(0xfedcba9876543210ULL);
 
 //// OVDJE KRAJ PRAVOG KODA
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -316,6 +321,7 @@ int main()
   // printf("%d\n",m);
   // printf ("ms[2] = %" PRIu64 "\n", ms[m]);
   // m++;
+
 
 
 
