@@ -12,15 +12,13 @@ uint64_t maxBroj = 0xffffffffffffffffULL;
 
 uint64_t generate(uint64_t rnd)
 {
-  //uint64_t A = 8654098236518264769ULL;
-  uint64_t A = 0xfcdbfa9f6c42af67ULL;
-  uint64_t B = 0xaefcbf98c6b4a210ULL;
 
-  //uint64_t B = 18116652324302926351ULL;
+  uint64_t A = 8654098236518264769ULL;
+  uint64_t B = 18116652324302926351ULL;
 
   uint64_t rnd1;
-  rnd1 = (rnd * A) % B | 1;
-  //printf ("%" PRIu64 "\n", rnd); //pravi odabir za ux
+  rnd1 = ((rnd * A) % B) | 1;
+
 
 
   return rnd1;
@@ -28,7 +26,7 @@ uint64_t generate(uint64_t rnd)
 
 
 
-
+//generator vjerojatnosti
 float generate01()
 {
 
@@ -51,8 +49,9 @@ int prost(uint64_t rnd)
 {
   if(cnt < 100000) cnt++;
   else cnt = 37642;
+
   for(int i = 2; i < cnt; ++i)
-  if(rnd % i == 0) return 0;
+    if(rnd % i == 0) return 0;
 
   return 1;
 }
@@ -61,16 +60,15 @@ int prost(uint64_t rnd)
 
 int testBitova(uint64_t rnd)
 {
-  int prvajedinica = 0;
+
   for (int i = 63; i >= 2; i--)
   {
+
       int k1 = rnd >> i;
       int k2 = rnd >> i-1;
       int k3 = rnd >> i-2;
 
-      if(k1 & 1 == 1) prvajedinica = 1;
 
-      if(prvajedinica == 1)
       if ( ((k1 & 1 == 1) && (k2 & 1 == 1) && (k3 & 1 == 1)) ||
        ((k1 & 1 == 0) && (k2 & 1 == 0) && (k3 & 1 == 0)))
         return 0;
@@ -78,15 +76,12 @@ int testBitova(uint64_t rnd)
   }
 
   return 1;
-
 }
-
-
 
 
 void ispis(double start, uint64_t ms[])
 {
-  printf("\nU ispisu:\n");
+//  printf("\nU ispisu:\n");
   double ukupno = dsecnd();
   double elapsed = ukupno - start;
   printf("%g ",elapsed);
@@ -101,7 +96,7 @@ void ispis(double start, uint64_t ms[])
     printf ("%" PRIu64 " ", ms[i]%100);
 
   printf("\n");
-  printf("Kraj ispisa\n\n" );
+  //printf("Kraj ispisa\n\n" );
 
 }
 
@@ -116,7 +111,7 @@ void ispisFile(double start, uint64_t ms[])
         fprintf(fptr, "Cannot open file \n");
         exit(0);
   }
-  //fprintf(f, "Some text: %s\n", text);
+
   double ukupno = dsecnd();
   double elapsed = ukupno - start;
   fprintf(fptr, "%g ",elapsed);
@@ -130,13 +125,16 @@ void ispisFile(double start, uint64_t ms[])
   for(int i = 0; i < 5; ++i)
     fprintf (fptr, "%" PRIu64 " ", ms[i]%100);
 
-  fprintf(fptr,"\n");
+  fprintf(fptr, "\n" );
+
+  // fprintf(fptr,"\n------------------------------");
+  // fprintf(fptr,"----------------------------------------------\n");
   fclose(fptr);
 }
 
 int processRqst(double timeLapse, double start, uint64_t ms[])
 {
-
+  //timeLapse = 2.0;
   if(timeLapse < 1.0) return 0; // 0 = nije kraj
   else
   {
@@ -162,34 +160,6 @@ int processRqst(double timeLapse, double start, uint64_t ms[])
   }
 }
 
-
-
-
-
-// POMOĆNE FUNKCIJE ZA ISPIS BROJEVA
-// void binarno(uint64_t n)
-// {
-//
-//     int binaryNum[1000];
-//     int i = 0;
-//     while (n > 0)
-//     {
-//
-//
-//         binaryNum[i] = n % 2;
-//         n = n / 2;
-//         i++;
-//     }
-//
-//
-//     for (int j = i - 1; j >= 0; j--)
-//          printf("%d",binaryNum[j] );
-//
-//       printf("\n" );
-// }
-//
-//
-//
 // void binarno2(uint64_t n)
 // {
 //
@@ -207,14 +177,6 @@ int processRqst(double timeLapse, double start, uint64_t ms[])
 
 
 
-
-
-
-
-
-
-
-
 int main()
 {
   srand(time(NULL));
@@ -224,7 +186,7 @@ int main()
 
   uint64_t ms[5];
   for(int j = 0; j < 5; ++j)
-    ms[j] = 0;
+    ms[j] = 0ULL;
 
 
 
@@ -235,22 +197,78 @@ int main()
   uint64_t rnd = time(NULL);
   uint64_t r;
   int ponavljaj;
+
+
+
+  // while(1)
+  // {
+  //
+  //   ponavljaj = 0;
+  //
+  //   r = generate(rnd);
+  //   rnd = r;
+  //   printf ("r = %" PRIu64 "\n", r);
+  //
+  //
+  //
+  //   while ((!testBitova(r)  ||  !prost(r)) )
+  //   {
+  //
+  //       if(r <= maxBroj - 2 && ponavljaj < 3000)
+  //       {
+  //         r +=2;
+  //         ponavljaj++;
+  //       }
+  //
+  //
+  //       else
+  //       {
+  //         r = generate(rnd);
+  //         rnd = r;
+  //         printf ("*r = %" PRIu64 "\n", r);
+  //         ponavljaj = 0;
+  //
+  //       }
+  //
+  //
+  //     }
+  //
+  //
+  //   //if(prost(r)) printf("broj %"PRIu64" je prost\n", r);
+  //   ms[m] = r;
+  //   if(m+1 == 5) m = 0;
+  //   else m++;
+  //
+  //   t2 = dsecnd();
+  //   int kraj = processRqst(t2-t1, start, ms);
+  //   t1 = t2;
+  //
+  //
+  //   if(kraj) break;
+  //
+  //  }
+
+
+
+
+
+
  while(1)
-  {
+ {
     r = generate(rnd);
-    printf ("r = %" PRIu64 "\n", r);
+    //printf ("r = %" PRIu64 "\n", r);
     rnd = r;
 
     ponavljaj = 0;
-    while((testBitova(r) == 0 || prost(r) == 0) && ponavljaj < 100000000)
+    while((testBitova(r) == 0 || prost(r) == 0) && ponavljaj < 10000000)
     {
 
-        if(r <= maxBroj - 2) r +=2;
-        else r = generate(rnd);
+        if(r <= maxBroj - 2 ) r +=2;
+        else { r = generate(rnd); rnd = r; }
 
         ponavljaj++;
     }
-    if(prost(r)) printf("broj %"PRIu64" je prost\n", r);
+    //if(prost(r)) printf("broj %"PRIu64" je prost\n", r);
     ms[m] = r;
     if(m+1 == 5) m = 0;
     else m++;
@@ -262,70 +280,23 @@ int main()
 
     if(kraj) break;
 
-   }
+}
 
 
-//binarno2(0xfedcba9876543210ULL);
+FILE *fptr;
+fptr = fopen("readme.txt", "a");
+
+if (fptr == NULL)
+{
+      fprintf(fptr, "Cannot open file \n");
+      exit(0);
+}
+fprintf(fptr,"\n------------------------------");
+fprintf(fptr,"----------------------------------------------\n");
+fclose(fptr);
+
 
 //// OVDJE KRAJ PRAVOG KODA
-//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-  //????????????????????????????????????????????????????
-  // OVDJE TESTOVI
-
-
-  // uint64_t rnd = time(NULL);
-  // uint64_t r = generate(rnd);
-  // printf ("r = %" PRIu64 "\n", r);
-  // if(prost(r)) printf("broj %"PRIu64" je prost\n", r);
-  // ms[m] = r;
-  // printf("%d\n",m);
-  // printf ("ms[0] = %" PRIu64 "\n", ms[m]);
-  // m++;
-  //
-  //
-
-  // uint64_t zn = (r>>0) & 1;
-  // uint64_t zn1 = (r>>1) & 1;
-  // uint64_t zn2 = (r>>2) & 1;
-  // uint64_t zn3 = (r>>3) & 1;
-  // uint64_t zn4 = (r>>4) & 1;
-  // uint64_t zn5 = (r>>5) & 1;
-  //
-  //
-  // printf("%" PRIu64 "\n",zn);
-  // printf("%" PRIu64 "\n",zn1);
-  // printf("%" PRIu64 "\n",zn2);
-  // printf("%" PRIu64 "\n",zn3);
-  // printf("%" PRIu64 "\n",zn3);
-  // printf("%" PRIu64 "\n",zn3);
-
-
-  //
-  //
-  //
-  //
-  // uint64_t r1 = generate(r);
-  // printf ("r1 = %" PRIu64 "\n", r1);
-  // if(prost(r1)) printf("broj %"PRIu64" je prost\n", r1);
-  // ms[m] = r1;
-  // printf("%d\n",m);
-  // printf ("ms[1] = %" PRIu64 "\n", ms[m]);
-  // m++;
-  //
-  //
-  // uint64_t r2 = generate(r1);
-  // printf ("r2 = %" PRIu64 "\n", r2);
-  // if(prost(r2)) printf("broj %"PRIu64" je prost\n", r2);
-  // ms[m] = r2;
-  // printf("%d\n",m);
-  // printf ("ms[2] = %" PRIu64 "\n", ms[m]);
-  // m++;
-
-
-
-
-
 
 
   return 0;
