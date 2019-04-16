@@ -179,6 +179,7 @@ void *dretvaProvjere(void* x)
         if(kraj) break;
 
     }
+    fclose(fptr);
 }
 
 
