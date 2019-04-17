@@ -79,7 +79,7 @@ int testBitova(uint64_t rnd)
 }
 
 
-int max(int broj[])
+int max()
 {
     int maxi = broj[0];
     for(int i = 1; i < 10; ++i)
@@ -94,7 +94,7 @@ int max(int broj[])
 void enter_KO(int id)
 {
     ulaz[id] = 1;
-    broj[id] = max(broj) + 1;
+    broj[id] = max() + 1;
     ulaz[id] = 0;
 
     for(int j = 0; j < 10; ++j)
@@ -124,7 +124,7 @@ void *radnaDretva(void *x)
         rnd = r;
         int ponavljaj = 0;
 
-        while((testBitova(r) == 0 || prost(r) == 0) && ponavljaj < 1000000)
+        while((testBitova(r) == 0 || prost(r) == 0) && ponavljaj < 100000)
         {
 
             if(r <= maxBroj - 2 ) r +=2;
